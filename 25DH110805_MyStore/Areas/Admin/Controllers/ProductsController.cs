@@ -7,6 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using _25DH110805_MyStore.Models;
+using PagedList;
+using _25DH110805_MyStore.Models.ViewModel;
 
 namespace _25DH110805_MyStore.Areas.Admin.Controllers
 {
@@ -15,10 +17,59 @@ namespace _25DH110805_MyStore.Areas.Admin.Controllers
         private MyStoreEntities db = new MyStoreEntities();
 
         // GET: Admin/Products
-        public ActionResult Index()
+        public ActionResult Index(string searchTerm, decimal? minPrice, decimal? maxPrice, string sortOrder, int? page)
         {
-            var product = db.Product.Include(p => p.Category);
-            return View(product.ToList());
+            var model = new ProductSearchVM();
+
+            model.SearchTerm = searchTerm;
+            model.MinPrice = minPrice;
+            model.MaxPrice = maxPrice;
+            model.SortOrder = sortOrder;
+
+            var products = db.Product.Include(p => p.Category).AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                products = products.Where(p => p.ProductName.Contains(searchTerm) ||
+                                               p.ProductDescription.Contains(searchTerm) ||
+                                               p.Category.CategoryName.Contains(searchTerm));
+            }
+
+            if (minPrice.HasValue)
+            {
+                products = products.Where(p => p.ProductPrice >= minPrice.Value);
+            }
+
+            if (maxPrice.HasValue)
+            {
+                products = products.Where(p => p.ProductPrice <= maxPrice.Value);
+            }
+
+            switch (sortOrder)
+            {
+                case "name_asc":
+                    products = products.OrderBy(p => p.ProductName);
+                    break;
+                case "name_desc":
+                    products = products.OrderByDescending(p => p.ProductName);
+                    break;
+                case "price_asc":
+                    products = products.OrderBy(p => p.ProductPrice);
+                    break;
+                case "price_desc":
+                    products = products.OrderByDescending(p => p.ProductPrice);
+                    break;
+                default:
+                    products = products.OrderBy(p => p.ProductName);
+                    break;
+            }
+
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
+
+            model.Products = products.ToPagedList(pageNumber, pageSize);
+
+            return View(model);
         }
 
         // GET: Admin/Products/Details/5
