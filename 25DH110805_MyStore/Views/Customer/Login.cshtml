@@ -1,0 +1,39 @@
+﻿@{
+    ViewBag.Title = "Đăng nhập";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<h2 class="bg-success text-center" style="padding: 10px;">ĐĂNG NHẬP HỆ THỐNG</h2>
+
+@using (Html.BeginForm("Login", "Customer", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Tên đăng nhập</label>
+            <div class="col-md-10">
+                <input type="text" name="username" class="form-control" placeholder="Nhập username" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Mật khẩu</label>
+            <div class="col-md-10">
+                <input type="password" name="password" class="form-control" placeholder="Nhập mật khẩu" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Đăng nhập" class="btn btn-primary" />
+                <p style="margin-top: 10px;">
+                    Chưa có tài khoản? @Html.ActionLink("Đăng ký ngay", "Register")
+                </p>
+            </div>
+        </div>
+    </div>
+}

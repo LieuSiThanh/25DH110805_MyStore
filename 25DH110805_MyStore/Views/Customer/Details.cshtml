@@ -1,0 +1,32 @@
+﻿@model _25DH110805_MyStore.Models.Customer
+
+@{
+    ViewBag.Title = "Thông tin cá nhân";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<h2 class="bg-success text-center" style="padding: 10px;">THÔNG TIN TÀI KHOẢN KHÁCH HÀNG</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Tên khách hàng:</dt>
+        <dd>@Html.DisplayFor(model => model.CustomerName)</dd>
+
+        <dt>Tên đăng nhập:</dt>
+        <dd>@Html.DisplayFor(model => model.Username)</dd>
+
+        <dt>Số điện thoại:</dt>
+        <dd>@Html.DisplayFor(model => model.CustomerPhone)</dd>
+
+        <dt>Email:</dt>
+        <dd>@Html.DisplayFor(model => model.CustomerEmail)</dd>
+
+        <dt>Địa chỉ:</dt>
+        <dd>@Html.DisplayFor(model => model.CustomerAddress)</dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Chỉnh sửa thông tin", "Edit", new { id = Model.CustomerID }, new { @class = "btn btn-primary" }) |
+    @Html.ActionLink("Về trang chủ", "Index", "Home", null, new { @class = "btn btn-default" })
+</p>
