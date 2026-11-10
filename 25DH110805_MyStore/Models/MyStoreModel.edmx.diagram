@@ -7,17 +7,17 @@
       <Diagram DiagramId="61408a7b689149efa7d43c61c9df1af1" Name="Diagram1" ZoomLevel="74">
         <EntityTypeShape EntityType="MyStoreModel.Category" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MyStoreModel.Customer" Width="1.5" PointX="0.5" PointY="3.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="MyStoreModel.Order" Width="1.5" PointX="4.5" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MyStoreModel.OrderDetail" Width="1.5" PointX="5.875" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MyStoreModel.Product" Width="1.5" PointX="3.25" PointY="0.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MyStoreModel.sysdiagrams" Width="1.5" PointX="8.625" PointY="2.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="MyStoreModel.User" Width="1.5" PointX="6.5" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MyStoreModel.User" Width="1.5" PointX="6.5" PointY="4.25" IsExpanded="true" />
         <AssociationConnector Association="MyStoreModel.FK_Pro_Category" ManuallyRouted="false" />
-        <AssociationConnector Association="MyStoreModel.FK__Order__CustomerI__2E1BDC42" ManuallyRouted="false" />
         <AssociationConnector Association="MyStoreModel.FK_User_Customer" ManuallyRouted="false" />
-        <AssociationConnector Association="MyStoreModel.FK__OrderDeta__Order__31EC6D26" ManuallyRouted="false" />
-        <AssociationConnector Association="MyStoreModel.FK__OrderDeta__Produ__30F848ED" ManuallyRouted="false" />
-      </Diagram>
+        <EntityTypeShape EntityType="MyStoreModel.Order" Width="1.5" PointX="3.125" PointY="4.375" />
+        <EntityTypeShape EntityType="MyStoreModel.OrderDetail" Width="1.5" PointX="5.5" PointY="0.75" />
+        <AssociationConnector Association="MyStoreModel.FK__Order__CustomerI__2E1BDC42" />
+        <AssociationConnector Association="MyStoreModel.FK__OrderDeta__Order__31EC6D26" />
+        <AssociationConnector Association="MyStoreModel.FK__OrderDeta__Produ__30F848ED" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>
