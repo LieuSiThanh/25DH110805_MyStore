@@ -81,7 +81,6 @@
         @Html.Label("Phương thức thanh toán", new { @class = "control-label col-md-2" })
         <div class="col-md-10">
             <label>@Html.RadioButtonFor(m => m.PaymentMethod, "Tiền mặt", new { @checked = "checked" }) Tiền mặt</label><br />
-            <label>@Html.RadioButtonFor(m => m.PaymentMethod, "Paypal") Paypal</label><br />
             <label>@Html.RadioButtonFor(m => m.PaymentMethod, "Mua trước trả sau") Mua trước trả sau</label>
         </div>
     </div>
