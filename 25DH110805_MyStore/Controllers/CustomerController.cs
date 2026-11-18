@@ -83,7 +83,6 @@ namespace _25DH110805_MyStore.Controllers
                 return View();
             }
 
-            // Dùng AsEnumerable kết hợp Trim() để loại bỏ khoảng trắng thừa gây lệch dữ liệu
             var user = db.User.AsEnumerable().FirstOrDefault(u =>
                 u.Username != null &&
                 u.Username.Trim().Equals(username.Trim(), System.StringComparison.OrdinalIgnoreCase) &&
