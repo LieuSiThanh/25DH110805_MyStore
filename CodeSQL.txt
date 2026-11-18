@@ -1,0 +1,62 @@
+CREATE DATABASE MyStore;
+GO
+
+USE MyStore;
+GO
+
+CREATE TABLE Category (
+    CategoryID INT IDENTITY(1,1) PRIMARY KEY,
+    CategoryName NVARCHAR(100) NOT NULL
+);
+
+CREATE TABLE [User] (
+    Username VARCHAR(50) PRIMARY KEY,
+    Password VARCHAR(255) NOT NULL,
+    UserRole NVARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Customer (
+    CustomerID INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerName NVARCHAR(100) NOT NULL,
+    CustomerPhone VARCHAR(20),
+    CustomerEmail VARCHAR(100),
+    CustomerAddress NVARCHAR(255),
+    Username VARCHAR(50) FOREIGN KEY REFERENCES [User](Username)
+);
+
+CREATE TABLE Product (
+    ProductID INT IDENTITY(1,1) PRIMARY KEY,
+    CategoryID INT FOREIGN KEY REFERENCES Category(CategoryID),
+    ProductName NVARCHAR(200) NOT NULL,
+    ProductPrice DECIMAL(18,2) NOT NULL,
+    ProductImage VARCHAR(255),
+    ProductDescription NVARCHAR(MAX)
+);
+
+CREATE TABLE [Order] (
+    OrderID INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerID INT FOREIGN KEY REFERENCES Customer(CustomerID),
+    OrderDate DATETIME NOT NULL,
+    TotalAmount DECIMAL(18,2) NOT NULL,
+    PaymentStatus NVARCHAR(50),
+    ShippingAddress NVARCHAR(255),
+    DeliveryMethod NVARCHAR(50),
+    PaymentMethod NVARCHAR(50)
+);
+
+CREATE TABLE OrderDetail (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    ProductID INT FOREIGN KEY REFERENCES Product(ProductID),
+    OrderID INT FOREIGN KEY REFERENCES [Order](OrderID),
+    Quantity INT NOT NULL,
+    UnitPrice DECIMAL(18,2) NOT NULL,
+    TotalPrice DECIMAL(18,2) NOT NULL
+);
+
+CREATE TABLE Cart (
+    CartID INT IDENTITY(1,1) PRIMARY KEY,
+    CustomerID INT FOREIGN KEY REFERENCES Customer(CustomerID),
+    ProductID INT FOREIGN KEY REFERENCES Product(ProductID),
+    Quantity INT NOT NULL,
+    UnitPrice DECIMAL(18,2) NOT NULL
+);
