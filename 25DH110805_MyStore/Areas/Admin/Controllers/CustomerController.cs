@@ -1,5 +1,4 @@
 ﻿using _25DH110805_MyStore.Models;
-using _25DH110805_MyStore.Models; 
 using System.Data.Entity;
 using System.Linq;
 using System.Net;

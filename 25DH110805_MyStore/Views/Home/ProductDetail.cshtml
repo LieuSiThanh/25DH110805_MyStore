@@ -1,7 +1,7 @@
 ﻿@model _25DH110805_MyStore.Models.ViewModel.ProductDetailsVM
 @{
     ViewBag.Title = "ProductDetails";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
 }
 
 <head>
@@ -82,4 +82,7 @@
             </div>
         </div>
     </div>
+    <p style="margin-top: 20px;">
+        @Html.ActionLink("Về trang chủ", "Index", "Home", null, new { @class = "btn btn-primary" })
+    </p>
 </div>

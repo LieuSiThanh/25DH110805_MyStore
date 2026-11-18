@@ -45,14 +45,14 @@
                 <td>@order.OrderDate</td>
                 <td>@string.Format("{0:N0} VNĐ", order.TotalAmount)</td>
                 <td>@order.PaymentStatus</td>
-                <td>@order.AddressDelivery</td>
+                <td>@order.ShippingAddress</td>
             </tr>
         }
     }
     else
     {
         <tr>
-            <td colspan="5" class="text-center text-muted">Khách hàng này chưa có đơn hàng nào trong hệ thống.</td>
+            <td colspan="5" class="text-center text-muted">Khách hàng chưa đặt hàng.</td>
         </tr>
     }
 </table>

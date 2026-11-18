@@ -1,0 +1,78 @@
+﻿@model PagedList.IPagedList<_25DH110805_MyStore.Models.Order>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2 class="bg-success text-white" style="padding: 10px; border-radius: 4px;">DANH SÁCH ĐƠN HÀNG</h2>
+
+@using (Html.BeginForm("Index", "Orders", FormMethod.Get))
+{
+    <div class="row mb-3" style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin-top: 15px;">
+        <div class="col-md-3">
+            <label>Tên khách hàng</label>
+            <input type="text" name="searchCustomer" value="@ViewBag.CurrentCustomer" class="form-control" placeholder="Nhập tên khách hàng..." />
+        </div>
+        <div class="col-md-3">
+            <label>Trạng thái thanh toán</label>
+            <select name="searchStatus" class="form-control">
+                <option value="">-- Tất cả trạng thái --</option>
+                <option value="Chưa thanh toán" @(ViewBag.CurrentStatus == "Chưa thanh toán" ? "selected" : "")>Chưa thanh toán</option>
+                <option value="Thanh toán tiền mặt" @(ViewBag.CurrentStatus == "Thanh toán tiền mặt" ? "selected" : "")>Thanh toán tiền mặt</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label>Ngày đặt hàng</label>
+            <input type="date" name="searchDate" value="@ViewBag.CurrentDate" class="form-control" />
+        </div>
+        <div class="col-md-3" style="margin-top: 24px;">
+            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
+            <a href="@Url.Action("Index")" class="btn btn-secondary">Làm mới</a>
+        </div>
+    </div>
+}
+
+<table class="table table-bordered table-hover">
+    <thead class="bg-info text-white">
+        <tr>
+            <th>Ngày đặt hàng</th>
+            <th>Tên khách hàng</th>
+            <th>Tổng giá trị</th>
+            <th>Trạng thái thanh toán</th>
+            <th>Phương thức giao hàng</th>
+            <th>Thao tác</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.OrderDate.ToString("dd/MM/yyyy HH:mm:ss")</td>
+                    <td>@(item.Customer != null ? item.Customer.CustomerName : "N/A")</td>
+                    <td>@string.Format("{0:N0}", item.TotalAmount) đ</td>
+                    <td>@item.PaymentStatus</td>
+                    <td>@item.DeliveryMethod</td>
+                    <td>
+                        <a href="@Url.Action("DetailedOrder", new { id = item.OrderID })" class="btn btn-info btn-sm text-white">Chi tiết</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="6" class="text-center text-danger font-weight-bold" style="padding: 20px;">
+                    KHÔNG CÓ DỮ LIỆU
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="d-flex justify-content-center">
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, searchCustomer = ViewBag.CurrentCustomer, searchStatus = ViewBag.CurrentStatus, searchDate = ViewBag.CurrentDate }))
+</div>

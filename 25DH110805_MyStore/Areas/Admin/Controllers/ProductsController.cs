@@ -72,7 +72,6 @@ namespace _25DH110805_MyStore.Areas.Admin.Controllers
             return View(model);
         }
 
-        // GET: Admin/Products/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -87,16 +86,12 @@ namespace _25DH110805_MyStore.Areas.Admin.Controllers
             return View(product);
         }
 
-        // GET: Admin/Products/Create
         public ActionResult Create()
         {
             ViewBag.CategoryID = new SelectList(db.Category, "CategoryID", "CategoryName");
             return View();
         }
 
-        // POST: Admin/Products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ProductID,CategoryID,ProductName,ProductPrice,ProductImage,ProductDescription")] Product product)
@@ -112,7 +107,6 @@ namespace _25DH110805_MyStore.Areas.Admin.Controllers
             return View(product);
         }
 
-        // GET: Admin/Products/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -128,9 +122,6 @@ namespace _25DH110805_MyStore.Areas.Admin.Controllers
             return View(product);
         }
 
-        // POST: Admin/Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ProductID,CategoryID,ProductName,ProductPrice,ProductImage,ProductDescription")] Product product)

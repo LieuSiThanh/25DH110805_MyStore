@@ -10,7 +10,7 @@
 <body>
     <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark">
         <div class="container">
-            @Html.ActionLink("MyStore", "Index", "AdminHome", new { area = "Admin" }, new { @class = "navbar-brand" })
+            @Html.ActionLink("Ethie", "Index", "AdminHome", new { area = "Admin" }, new { @class = "navbar-brand" })
 
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
@@ -23,7 +23,6 @@
                     <li>@Html.ActionLink("Sản Phẩm", "Index", "Products", new { area = "Admin" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Khách Hàng", "Index", "Customers", new { area = "Admin" }, new { @class = "nav-link" })</li>
                     <li>@Html.ActionLink("Đơn Hàng", "Index", "Orders", new { area = "Admin" }, new { @class = "nav-link" })</li>
-                    <li>@Html.ActionLink("Tài Khoản", "Index", "Users", new { area = "Admin" }, new { @class = "nav-link" })</li>
                 </ul>
             </div>
         </div>
@@ -32,7 +31,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Mystore</p>
+            <p>&copy; @DateTime.Now.Year - Ethie</p>
             <p>Liều Sì Thanh</p>
         </footer>
     </div>

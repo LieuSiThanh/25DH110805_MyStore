@@ -18,6 +18,7 @@ namespace _25DH110805_MyStore.Models
         public Customer()
         {
             this.Order = new HashSet<Order>();
+            this.Cart = new HashSet<Cart>();
         }
     
         public int CustomerID { get; set; }
@@ -30,5 +31,7 @@ namespace _25DH110805_MyStore.Models
         public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Order> Order { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Cart> Cart { get; set; }
     }
 }

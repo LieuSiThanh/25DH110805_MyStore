@@ -16,7 +16,7 @@
                         </a>
                     </div>
                     <div>
-                        <p class="prodPrice">@Html.DisplayFor(modelItem => product.ProductPrice)</p>
+                        <p class="prodPrice">@string.Format("{0:N0} VNĐ", product.ProductPrice)</p>
                         <p class="prodName">@Html.DisplayFor(modelItem => product.ProductName)</p>
                         <p class="prodCate">@Html.DisplayFor(modelItem => product.Category.CategoryName)</p>
                         <p class="prodSale">Đã bán:&nbsp;@Html.DisplayFor(modelItem => product.OrderDetail.Count)</p>

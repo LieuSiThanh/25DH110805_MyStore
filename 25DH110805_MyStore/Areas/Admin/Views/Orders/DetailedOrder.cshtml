@@ -1,0 +1,57 @@
+﻿@model _25DH110805_MyStore.Models.Order
+
+@{
+    ViewBag.Title = "Chi tiết đơn hàng";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+    var orderDetails = ViewBag.OrderDetails as List<_25DH110805_MyStore.Models.OrderDetail>;
+}
+
+<h2>CHI TIẾT ĐƠN HÀNG</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <h4>THÔNG TIN ĐƠN HÀNG</h4>
+        <p><strong>Ngày đặt hàng:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm:ss")</p>
+        <p><strong>Tên khách hàng:</strong> @(Model.Customer != null ? Model.Customer.CustomerName : "N/A")</p>
+        <p><strong>Tổng giá trị:</strong> @string.Format("{0:N0}", Model.TotalAmount) đ</p>
+        <p><strong>Phương thức thanh toán:</strong> @Model.PaymentMethod</p>
+        <p><strong>Trạng thái thanh toán:</strong> @Model.PaymentStatus</p>
+        <p><strong>Phương thức giao hàng:</strong> @Model.DeliveryMethod</p>
+        <p><strong>Địa chỉ giao hàng:</strong> @Model.ShippingAddress</p>
+    </div>
+
+    <div class="col-md-8">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Sản phẩm</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (orderDetails != null)
+                {
+                    foreach (var detail in orderDetails)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@detail.Product.ProductImage" width="50" style="margin-right: 10px;" />
+                                @detail.Product.ProductName
+                            </td>
+                            <td>@detail.Quantity</td>
+                            <td>@string.Format("{0:N0}", detail.UnitPrice) đ</td>
+                            <td>@string.Format("{0:N0}", detail.TotalPrice) đ</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a href="@Url.Action("UpdateStatus", new { id = Model.OrderID })" class="btn btn-primary">Cập nhật trạng thái</a>
+    <a href="@Url.Action("Index")" class="btn btn-secondary">Quay lại danh sách</a>
+</div>

@@ -32,5 +32,6 @@ namespace _25DH110805_MyStore.Models
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<Order> Order { get; set; }
         public virtual DbSet<OrderDetail> OrderDetail { get; set; }
+        public virtual DbSet<Cart> Cart { get; set; }
     }
 }

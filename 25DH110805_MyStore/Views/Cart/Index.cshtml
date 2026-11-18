@@ -1,4 +1,4 @@
-﻿@model _25DH110805_MyStore.Models.ViewModel.Cart
+﻿@model IEnumerable<_25DH110805_MyStore.Models.ViewModel.CartItem>
 @{
     ViewBag.Title = "Giỏ hàng";
     Layout = "~/Views/Shared/_CustomerLayout.cshtml";
@@ -53,7 +53,7 @@
     <h2>GIỎ HÀNG CỦA BẠN</h2>
     <hr />
 
-    @if (Model.Items == null || !Model.Items.Any())
+    @if (Model == null || !Model.Any())
     {
         <p>Bạn chưa có sản phẩm nào trong giỏ hàng.</p>
         <p>@Html.ActionLink("Tiếp tục mua sắm", "Index", "Home", null, new { @class = "btn btn-warning" })</p>
@@ -78,7 +78,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model.Items)
+                            @foreach (var item in Model)
                             {
                                 <tr>
                                     <td>
@@ -108,7 +108,7 @@
                 <div class="cart-section">
                     <h4><strong>Cộng giỏ hàng</strong></h4>
                     <hr />
-                    <p>Tổng giá trị: <span style="color: red; font-size: 18px; font-weight: bold;">@Model.TotalValue().ToString("N0") ₫</span></p>
+                    <p>Tổng giá trị: <span style="color: red; font-size: 18px; font-weight: bold;">@Model.Sum(x => x.TotalPrice).ToString("N0") ₫</span></p>
 
                     @Html.ActionLink("Mua hàng (Checkout)", "Checkout", "Order", null, new { @class = "btn btn-danger cart-button" })
                 </div>

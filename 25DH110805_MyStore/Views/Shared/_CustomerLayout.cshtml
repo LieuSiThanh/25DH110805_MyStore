@@ -1,18 +1,45 @@
-﻿@using _25DH110805_MyStore.Models.ViewModel
+﻿@using _25DH110805_MyStore.Models
 @{
-    var cart = Session["Cart"] as Cart;
+    int totalQuantity = 0;
+    bool isLoggedIn = Request.IsAuthenticated || Session["Username"] != null;
+    string username = Session["Username"] != null ? Session["Username"].ToString() : (User.Identity.IsAuthenticated ? User.Identity.Name : string.Empty);
 
-    ViewBag.pmmodel = new PersonalMenuVM
+    if (isLoggedIn)
     {
-        IsLoggedIn = Request.IsAuthenticated || Session["Username"] != null,
-        Username = Session["Username"] != null ? Session["Username"].ToString() : (User.Identity.IsAuthenticated ? User.Identity.Name : string.Empty),
-        CartCount = 0
-    };
+        using (var db = new MyStoreEntities())
+        {
+            int customerId = 0;
+            if (Session["CustomerID"] != null)
+            {
+                int.TryParse(Session["CustomerID"].ToString(), out customerId);
+            }
+            else if (!string.IsNullOrEmpty(username))
+            {
+                var cust = db.Customer.FirstOrDefault(c => c.Username == username);
+                if (cust != null)
+                {
+                    customerId = cust.CustomerID;
+                    Session["CustomerID"] = customerId;
+                }
+            }
 
-    if (cart != null && cart.Items != null && cart.Items.Any())
-    {
-        ViewBag.pmmodel.CartCount = cart.Items.Sum(i => i.Quantity);
+            if (customerId > 0)
+            {
+                var cartInDb = db.Cart.Where(c => c.CustomerID == customerId);
+                if (cartInDb.Any())
+                {
+                    totalQuantity = cartInDb.Sum(c => (int)c.Quantity);
+                }
+            }
+        }
     }
+
+    ViewBag.pmmodel = new _25DH110805_MyStore.Models.ViewModel.PersonalMenuVM
+    {
+        IsLoggedIn = isLoggedIn,
+        Username = username,
+        CartCount = totalQuantity
+    };
 }
 
 <!DOCTYPE html>
@@ -20,7 +47,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - FASTOR Store</title>
+    <title>@ViewBag.Title - Ethie Store</title>
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -63,15 +90,15 @@
             display: inline-block;
         }
 
-        .nav-personal > li {
-            display: inline-block;
-            float: left;
+        .nav-personal {
+            display: flex !important;
+            align-items: center;
+            flex-direction: row;
         }
 
-            .nav-personal > li > a {
-                color: #333 !important;
-                font-weight: 600;
-                padding: 15px 12px;
+            .nav-personal > li {
+                float: none !important;
+                display: inline-block !important;
             }
 
         .dropdown-menu-custom {
@@ -111,6 +138,11 @@
             font-size: 12px;
             margin-left: 3px;
         }
+        .thumbnail img, .product-item img, .card-img-top {
+            width: 100% !important;
+            height: 220px !important;
+            object-fit: contain !important;
+        }
 
         footer {
             background-color: #e0e0e0;
@@ -126,29 +158,25 @@
         Free ship đơn từ 40k, giảm nhiều hơn cùng <span style="color: blue; font-style: normal;">FREESHIP XTRA</span>
     </div>
 
-    <div class="navbar navbar-default navbar-custom">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a href="@Url.Action("Index", "Home")" class="navbar-brand">
-                    <strong style="font-size: 24px; color: #333; letter-spacing: 2px;">FASTOR</strong>
+    <div class="navbar navbar-default navbar-custom" style="padding: 0 15px;">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 100%; padding: 0;">
+
+            <div class="navbar-header" style="float: none; margin: 0;">
+                <a href="@Url.Action("Index", "Home")" class="navbar-brand" style="height: auto; padding: 10px 0; display: flex; align-items: center;">
+                    <strong style="font-size: 24px; color: #333; letter-spacing: 2px;">Ethie</strong>
                 </a>
             </div>
 
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right nav-personal">
-                    <li>
-                        <a href="@Url.Action("Index", "Home")">
+            <div style="float: none;">
+                <ul class="nav navbar-nav navbar-right nav-personal" style="display: flex; align-items: center; margin: 0; list-style: none;">
+                    <li style="float: none;">
+                        <a href="@Url.Action("Index", "Home")" style="display: flex; align-items: center; gap: 5px; padding: 15px 12px; color: #333; text-decoration: none; font-weight: 600;">
                             <i class="fas fa-home"></i> Trang chủ
                         </a>
                     </li>
 
-                    <li class="dropdown" style="position: relative;">
-                        <a href="javascript:void(0)" class="dropdown-toggle">
+                    <li class="dropdown" style="float: none; position: relative;">
+                        <a href="javascript:void(0)" class="dropdown-toggle" style="display: flex; align-items: center; gap: 5px; padding: 15px 12px; color: #333; text-decoration: none; font-weight: 600;">
                             <i class="fas fa-user"></i>
                             @if (ViewBag.pmmodel.IsLoggedIn)
                             {
@@ -163,21 +191,21 @@
                         <ul class="dropdown-menu-custom">
                             @if (ViewBag.pmmodel.IsLoggedIn)
                             {
-                                <li><a href="@Url.Action("ProfileInfo", "Account")"><i class="fas fa-id-card"></i> Thông tin tài khoản</a></li>
+                                <li><a href="@Url.Action("Details", "Customer", new { id = Session["CustomerID"] })">Thông tin tài khoản</a></li>
                                 <li><a href="@Url.Action("MyOrder", "Order")"><i class="fas fa-shopping-bag"></i> Lịch sử mua hàng</a></li>
                                 <li class="divider" style="height:1px; background:#eee; margin:5px 0;"></li>
-                                <li><a href="@Url.Action("Logout", "Account")"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
+                                <li><a href="@Url.Action("Logout", "Customer")"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a></li>
                             }
                             else
                             {
-                                <li><a href="@Url.Action("Register", "Account")"><i class="fas fa-user-plus"></i> Đăng ký</a></li>
-                                <li><a href="@Url.Action("Login", "Account")"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
+                                <li><a href="@Url.Action("Register", "Customer")"><i class="fas fa-user-plus"></i> Đăng ký</a></li>
+                                <li><a href="@Url.Action("Login", "Customer")"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
                             }
                         </ul>
                     </li>
 
-                    <li>
-                        <a href="@Url.Action("Index", "Cart")">
+                    <li style="float: none;">
+                        <a href="@Url.Action("Index", "Cart")" style="display: flex; align-items: center; gap: 5px; padding: 15px 12px; color: #333; text-decoration: none; font-weight: 600;">
                             <i class="fas fa-shopping-cart"></i> Giỏ hàng
                             <span class="cart-badge">@ViewBag.pmmodel.CartCount</span>
                         </a>
@@ -198,7 +226,7 @@
                     <p>&copy; @DateTime.Now.Year - Website Bán Hàng ASP.NET MVC5</p>
                 </div>
                 <div class="col-md-6 text-right">
-                    <p><strong>Contact:</strong> Thành viên thực hiện dự án</p>
+                    <p><strong>Contact:</strong> Liều Sì Thanh</p>
                 </div>
             </div>
         </div>

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<_25DH110805_MyStore.Models.Order>
+
+@{
+    ViewBag.Title = "Lịch sử đơn hàng";
+    Layout = "~/Views/Shared/_CustomerLayout.cshtml";
+}
+
+<div class="container" style="background-color: ghostwhite; padding: 20px; border-radius: 5px; margin-top: 20px;">
+    <h2>LỊCH SỬ MUA HÀNG CỦA BẠN</h2>
+    <hr />
+
+    @if (Model == null || !Model.Any())
+    {
+        <p>Bạn chưa có đơn hàng nào.</p>
+        <p>@Html.ActionLink("Tiếp tục mua sắm", "Index", "Home", null, new { @class = "btn btn-warning" })</p>
+    }
+    else
+    {
+        <table class="table table-bordered table-hover" style="background-color: white;">
+            <thead>
+                <tr class="bg-success text-white">
+                    <th>Mã đơn hàng</th>
+                    <th>Ngày đặt</th>
+                    <th>Tổng tiền</th>
+                    <th>Trạng thái / Địa chỉ giao</th>
+                    <th>Thao tác</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td><strong>#@item.OrderID</strong></td>
+                        <td>@item.OrderDate.ToString("dd/MM/yyyy HH:mm")</td>
+                        <td style="color: red; font-weight: bold;">
+                            @if (item.OrderDetail != null && item.OrderDetail.Any())
+                            {
+                                @item.OrderDetail.Sum(d => d.Quantity * d.UnitPrice).ToString("N0") <text>₫</text>
+                            }
+                            else
+                            {
+                                <text>0 ₫</text>
+                            }
+                        </td>
+                        <td>@item.ShippingAddress</td>
+                        <td>
+                            @Html.ActionLink("Chi tiết", "Details", new { id = item.OrderID }, new { @class = "btn btn-info btn-sm" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+
+    <p style="margin-top: 20px;">
+        @Html.ActionLink("Về trang chủ", "Index", "Home", null, new { @class = "btn btn-primary" })
+    </p>
+</div>
